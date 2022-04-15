@@ -1,4 +1,6 @@
 import com.google.gson.GsonBuilder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -20,6 +22,7 @@ public class Main {
         String fileJson = "data2.json";
         Document document = buildDocument(pathFile);
         List<Employee> employeeListPeople = buildNoteList(document);
+        employeeListPeople.forEach(System.out::println);
         List<String> stringListJson = listToJson(employeeListPeople);
         writeString(stringListJson, fileJson);
 
@@ -42,7 +45,6 @@ public class Main {
             e.printStackTrace();
         }
     }
-
     private static List<Employee> buildNoteList(Document document) {
         List<Employee> employeeList = new ArrayList<>();
         NodeList nodeList = document
@@ -55,14 +57,16 @@ public class Main {
         String lastName = null;
         String country = null;
         long age = 0;
-        for (int i = 0; i < nodeList.getLength(); i++) {
 
+        for (int i = 0; i < nodeList.getLength(); i++) {
             if (nodeList.item(i).getNodeName().equals("employee")) {
                 node = nodeList.item(i);
             }
             if (node == null) continue;
             NodeList nodeListPeople = node.getChildNodes();
-
+            if (nodeListPeople.item(i).getNodeType() == Node.ELEMENT_NODE){
+                continue;
+            }
             for (int j = 0; j < nodeListPeople.getLength(); j++) {
 
                 if (nodeListPeople.item(j).getNodeName().equals("id")) {
